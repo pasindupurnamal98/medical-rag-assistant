@@ -1,4 +1,4 @@
 .venv
-/server/.env
+/backend/.env
 __pycache__
 test.py
