@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from middlewares.exception_handlers import catch_exception_middleware
 from routes.upload_pdfs import router as upload_router
-from backend.routes.ask_question import router as ask_router
+#from backend.routes.ask_question import router as ask_router
+from routes.ask_question import router as ask_router
 
 app = FastAPI(title="Medical Assistant API",description="API for a medical assistant application",version="1.0.0")
 
