@@ -1,12 +1,12 @@
 from fastapi import Request
 from fastapi.responses import JSONResponse
-from logger import Logger
+from logger import logger
 
 async def catch_exception_middleware(request: Request, call_next):
     try:
         response = await call_next(request)
        
     except Exception as exc:
-        Logger.error(f"Unhandled exception: {str(exc)}")
-        return JSONResponse(status_code=500, contents={"error": str(exc)})
+        logger.error(f"Unhandled exception: {str(exc)}")
+        return JSONResponse(status_code=500, content={"error": str(exc)})
     
