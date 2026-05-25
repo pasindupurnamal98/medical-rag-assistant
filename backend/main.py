@@ -13,7 +13,7 @@ app.add_middleware(
     allow_origins=["*"],  # Allow all origins for development, restrict in production
     allow_methods=["*"],
     allow_headers=["*"],
-    alow_credentials=["*"],
+    allow_credentials=True,
 )
 
 #Exception Handling Middleware

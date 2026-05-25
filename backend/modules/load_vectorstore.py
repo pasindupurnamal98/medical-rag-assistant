@@ -45,7 +45,11 @@ index=pc.Index(PINECONE_INDEX_NAME)
 # ✅ ✅ MOVE FUNCTION OUTSIDE (IMPORTANT)
 def load_vectorstore(uploaded_files):
 
-    embed_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    #embed_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    embed_model = GoogleGenerativeAIEmbeddings(
+    model="models/gemini-embedding-001",
+    output_dimensionality=768
+    )
     file_paths = []
 
     # 1. Upload files
