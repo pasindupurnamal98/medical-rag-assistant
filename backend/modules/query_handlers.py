@@ -1,4 +1,4 @@
-from logger import Logger
+from logger import logger
 
 def query_chain(chain,user_input:str):
     try:
