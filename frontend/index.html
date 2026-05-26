@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediBot - AI Medical RAG Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Panel -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <h1>MediBot</h1>
+                </div>
+                <div class="status-badge">
+                    <span class="pulse-dot"></span>
+                    <span class="status-text">Connected</span>
+                </div>
+            </div>
+
+            <!-- Upload Zone -->
+            <div class="sidebar-section">
+                <h3 class="section-title">Knowledge Base</h3>
+                <div class="upload-zone" id="uploadZone">
+                    <svg class="upload-icon" viewBox="0 0 24 24" width="36" height="36" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path>
+                    </svg>
+                    <p class="upload-title">Upload Medical PDFs</p>
+                    <p class="upload-subtitle">Drag & drop files here or <span class="browse-link">browse</span></p>
+                    <input type="file" id="fileInput" multiple accept=".pdf" style="display: none;">
+                </div>
+            </div>
+
+            <!-- Streaming Vectorization Progress Panel -->
+            <div class="sidebar-section progress-section" id="progressContainer" style="display: none;">
+                <div class="progress-header">
+                    <span class="progress-label">Vectorization Progress</span>
+                    <span class="progress-percentage" id="progressPercentage">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressBarFill"></div>
+                </div>
+                <p class="progress-message" id="progressMessage">Analyzing document structure...</p>
+            </div>
+
+            <!-- Uploaded Files List -->
+            <div class="sidebar-section files-section">
+                <h3 class="section-title">Uploaded Documents</h3>
+                <div class="empty-files" id="emptyFiles">
+                    No documents indexed yet. Upload PDFs to build the medical knowledge base.
+                </div>
+                <ul class="files-list" id="filesList" style="display: none;">
+                    <!-- Dynamically populated files -->
+                </ul>
+            </div>
+
+            <!-- Guidelines and Info -->
+            <div class="sidebar-section info-card">
+                <div class="info-icon">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                </div>
+                <div>
+                    <h4>RAG-Powered Assistant</h4>
+                    <p>MediBot extracts information directly from your medical literature. Upload clinic reports, guidelines, or research papers for highly context-aware responses.</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-container">
+            <header class="chat-header">
+                <div class="chat-title-info">
+                    <h2>Consultation Session</h2>
+                    <p>Powered by Llama-3.3 & Gemini Embeddings</p>
+                </div>
+                <button class="clear-chat-btn" id="clearChatBtn" title="Clear conversation history">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                    <span>Clear Chat</span>
+                </button>
+            </header>
+
+            <!-- Chat Messages Log -->
+            <div class="chat-messages" id="chatMessages">
+                <!-- Welcome Message -->
+                <div class="message system-message">
+                    <div class="message-avatar">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                    </div>
+                    <div class="message-content">
+                        <h3>Welcome to MediBot!</h3>
+                        <p>I am your specialized RAG assistant for medical and health documentation.</p>
+                        <p>To begin, **upload your medical PDFs** in the sidebar. Once vectorization completes, ask me questions about their content. I will analyze the documents and formulate answers based entirely on the provided text.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Suggestions -->
+            <div class="chat-suggestions-container" id="suggestionsContainer">
+                <div class="suggestion-chip" data-query="Explain the primary symptoms and diagnostic criteria outlined in the uploaded document.">
+                    🔍 Outline symptoms & diagnostics
+                </div>
+                <div class="suggestion-chip" data-query="What are the recommended treatments, dosages, or interventions described?">
+                    💊 Recommended treatments & dosages
+                </div>
+                <div class="suggestion-chip" data-query="Summarize the key warnings, contraindications, or risk factors mentioned.">
+                    ⚠️ Key warnings & risk factors
+                </div>
+            </div>
+
+            <!-- Input Form and Disclaimers -->
+            <footer class="chat-footer">
+                <form class="chat-input-form" id="chatForm">
+                    <input type="text" id="userInput" placeholder="Ask a question about the indexed medical documents..." autocomplete="off" required>
+                    <button type="submit" class="send-btn" id="sendBtn" title="Send message">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </form>
+                <div class="disclaimer-text">
+                    Disclaimer: MediBot is an AI assistant, not a licensed healthcare professional. Content generated here is based on your uploaded documentation and should never replace qualified clinical advice or diagnosis.
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
