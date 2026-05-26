@@ -13,7 +13,10 @@ async def upload_pdfs(files:List[UploadFile] = File(...)):
         logger.info("Recieved uploaded files")
         load_vectorstore(files)
         logger.info("Document added to vectorstore")
-        return {"messages":"Files processed and vectorstore updated"}
+        #return {"messages":"Files processed and vectorstore updated"}
+        return {
+            "uploaded_files":[file.filename for file in files]
+        }
     except Exception as e:
         logger.exception("Error during PDF upload")
         return JSONResponse(status_code=500,content={"error":str(e)})

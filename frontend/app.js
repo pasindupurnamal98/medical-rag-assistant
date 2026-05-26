@@ -308,6 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
+            console.log("Upload response:", data);  // ✅ add this line
             
             if (data.error) {
                 throw new Error(data.error);
@@ -316,9 +317,19 @@ document.addEventListener('DOMContentLoaded', () => {
             // Immediately complete to 100% on success!
             completeProgress();
             showToast('Vectorization complete!', 'success');
+
+            
+            // ✅ Use backend response instead of frontend guess
+            const filesToShow = data.uploaded_files || pdfFiles.map(f => f.name);
+
+            filesToShow.forEach(name => addFileToSidebar(name));
+
+            // Optional fix (in case CSS issue exists)
+            filesList.style.display = 'block';
+
             
             // Add files to list
-            pdfFiles.forEach(f => addFileToSidebar(f.name));
+            // pdfFiles.forEach(f => addFileToSidebar(f.name));
             setTimeout(resetProgress, 3500);
 
         } catch (error) {
