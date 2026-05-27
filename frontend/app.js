@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_BASE = 'http://localhost:8000';
     const ENDPOINT_UPLOAD = `${API_BASE}/upload_pdfs/`;
     const ENDPOINT_ASK = `${API_BASE}/ask/`;
+    const ENDPOINT_LIST_DOCS = `${API_BASE}/list_documents/`;
 
     // DOM Elements
     const uploadZone = document.getElementById('uploadZone');
@@ -28,6 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // List of successfully uploaded files
     let uploadedFilesDb = [];
+
+    // Load uploaded documents from server on page load
+    async function loadUploadedDocuments() {
+        try {
+            const response = await fetch(ENDPOINT_LIST_DOCS);
+            if (response.ok) {
+                const data = await response.json();
+                const documents = data.documents || [];
+                documents.forEach(docName => addFileToSidebar(docName));
+            }
+        } catch (error) {
+            console.warn('Could not load documents list from server:', error);
+        }
+    }
 
     // Initialize drag and drop events
     ['dragenter', 'dragover'].forEach(eventName => {
@@ -237,6 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
             filesList.appendChild(li);
         });
     }
+
+    // Load uploaded documents from server on page load
+    loadUploadedDocuments();
 
     // Handle Upload with Simulated Progress
     let progressInterval = null;
