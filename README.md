@@ -1,6 +1,6 @@
 # 📅 AI Medical Assistant Chatbot — RAG-based Application
 
-![Medical Assistant Thumbnail](./assets/medicalAssistant.png)
+![Chat Interface](./Architecture/ui.png)
 
 
 ---
@@ -33,8 +33,6 @@ Retrieved Docs
    ↓
 LLM-generated Answer
 ```
-
-(./assets/MedicalAssistant.pdf)**
 
 ---
 
