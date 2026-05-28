@@ -73,7 +73,7 @@ def load_vectorstore(uploaded_files):
         texts = [chunk.page_content for chunk in chunks]
         #metadatas = [chunk.metadata for chunk in chunks]
         metadatas = [
-            {**chunk.metadata, "source": str(file_path)}  # ✅ force string, not Path
+            {**chunk.metadata, "source": str(file_path), "text": chunk.page_content}  # ✅ Include text content in metadata
             for chunk in chunks
         ]
         ids = [f"{file_path.stem}.{i}" for i in range(len(chunks))]
@@ -83,7 +83,7 @@ def load_vectorstore(uploaded_files):
 
         print("Upserting embeddings...")
         with tqdm(total=len(embeddings)) as progress:
-            index.upsert(vectors=zip(ids, embeddings, metadatas))
+            index.upsert(vectors=list(zip(ids, embeddings, metadatas)))
             progress.update(len(embeddings))
 
         print(f"Upload complete for {file_path.name}")
