@@ -59,7 +59,7 @@ LLM-generated Answer
 | Framework  | LangChain                  |
 | Backend    | FastAPI                    |
 
-(./Architecture/Architecture-diagram1.png)
+Architecture/Architecture-diagram1.png
 ---
 
 ## 📚 API Endpoints
